@@ -30,7 +30,7 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
     API DOCS STUFF, DONT TOUCH
     -----
     """
-    # Prepare the Actor input
+    # Prepare the Actor input .
     run_input = { "profileUrls": [
             url
         ] }
