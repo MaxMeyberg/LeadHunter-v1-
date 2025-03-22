@@ -1,29 +1,16 @@
 from apify_client import ApifyClient
 from dotenv import load_dotenv
-#import json
-import os #needed for API calls to work
-load_dotenv("./.env")
+import os
+import json
 
-"""
-    Input: url from linkedin
+load_dotenv("../.env")
 
-    Output: user email
-"""
 def APIFY_LinkedIn_WebScrape(url: str) -> str: 
-    
-
     API_TOKEN = os.getenv("APIFY_API_TOKEN")
-    # Initialize the ApifyClient with your API token
     client = ApifyClient(API_TOKEN)
 
-    # Check if API token is available
-    #-----TEMP
-    # for key, value in os.environ.items():
-    #     print(f"{key}: {value}")
-    #----
-    if API_TOKEN == None:
-        return "No API token found"
-
+    if API_TOKEN is None:
+        return json.dumps({"error": "No API token found"})
 
 
     """
@@ -38,17 +25,18 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
     # Run the Actor and wait for it to finish, the "2SyF0bVxmgGr8IVCZ" is just the ID for Apify ,DONT be stupid and touch it, I got it from the Docs
     run = client.actor("2SyF0bVxmgGr8IVCZ").call(run_input=run_input)
 
-    # Fetch and print Actor results from the run's dataset (if there are any)
     for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-        continue
+        break  # Only take the first item
 
-    """
-    Ok, you can write below here :)
-    -----
-    """
+    # Ensure keys exist before accessing them
+    about = item.get("about", "")
+    headline = item.get("headline", "")
+    email = item.get("email", "")
 
-    #test to see if we even found an email:
-    if item["email"] == None:
-        return None
-    return item["email"]
+    result = {
+        "about": about,
+        "headline": headline,
+        "email": email
+    }
 
+    return json.dumps(result, indent=2)
