@@ -1,7 +1,8 @@
 from apify_client import ApifyClient
+from dotenv import load_dotenv
 
 # Initialize the ApifyClient with your API token
-client = ApifyClient("<YOUR_API_TOKEN>")
+client = ApifyClient("APIFY_API_TOKEN")
 
 # Prepare the Actor input
 run_input = { "profileUrls": [
