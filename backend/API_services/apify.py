@@ -49,6 +49,6 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
 
     #test to see if we even found an email:
     if item["email"] == None:
-        return "No email found"
+        return None
     return item["email"]
 
