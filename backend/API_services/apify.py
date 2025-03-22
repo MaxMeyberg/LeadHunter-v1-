@@ -26,4 +26,8 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
     for item in client.dataset(run["defaultDatasetId"]).iterate_items():
         print(item)
 
+    #test to see if we even found an email:
+    if item["email"] == None:
+        return "No email found"
     return item["email"]
+
