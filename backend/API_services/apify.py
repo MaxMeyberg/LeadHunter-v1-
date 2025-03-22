@@ -32,11 +32,13 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
     about = item.get("about", "")
     headline = item.get("headline", "")
     email = item.get("email", "")
+    fullName = item.get("fullName", "")
 
     result = {
         "about": about,
         "headline": headline,
-        "email": email
+        "email": email,
+        "fullName": fullName
     }
 
     return json.dumps(result, indent=2)

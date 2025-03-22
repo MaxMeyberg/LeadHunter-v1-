@@ -18,6 +18,7 @@ export default function Demo() {
   const [emailContent, setEmailContent] = useState('')
   const [analysisRationale, setAnalysisRationale] = useState<string[]>([])
   const [error, setError] = useState('')
+  const [copied, setCopied] = useState(false)
 
   const aiSteps = [
     { title: 'Sensing', description: 'Scraping LinkedIn profile data' },
@@ -68,6 +69,17 @@ export default function Demo() {
       setIsEmailLoading(false)
     }
   }
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 p-8">
@@ -137,7 +149,20 @@ export default function Demo() {
                   <div className="flex items-center gap-2">
                     <span className="text-blue-600 text-xl">✓</span>
                     <h2 className="text-lg font-medium text-gray-900">Identified Contact:</h2>
-                    <code className="px-3 py-1 bg-blue-50 rounded text-blue-600">{email}</code>
+                    <div className="relative inline-block">
+                      <code 
+                        className={`px-3 py-1 rounded cursor-pointer transition-colors ${copied ? 'bg-green-100 text-green-600' : 'bg-blue-50 text-blue-600'}`}
+                        onClick={() => copyToClipboard(email)}
+                        title="Click to copy to clipboard"
+                      >
+                        {email}
+                      </code>
+                      {copied && (
+                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                          Copied!
+                        </span>
+                      )}
+                    </div>
                   </div>
                   
                   <Card className="bg-gray-50 border border-gray-200">
