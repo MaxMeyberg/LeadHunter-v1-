@@ -12,3 +12,5 @@ Install dependencies:
 
     pip install -r requirements.txt
 
+RUN backend:
+    python app.py

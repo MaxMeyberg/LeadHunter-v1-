@@ -2,7 +2,7 @@ from apify_client import ApifyClient
 from dotenv import load_dotenv
 #import json
 import os #needed for API calls to work
-load_dotenv("../../.env")
+load_dotenv("./.env")
 
 """
     Input: url from linkedin
@@ -10,9 +10,18 @@ load_dotenv("../../.env")
     Output: user email
 """
 def APIFY_LinkedIn_WebScrape(url: str) -> str: 
-    # Initialize the ApifyClient with your API token
-    client = ApifyClient("APIFY_API_TOKEN")
+    
+
     API_TOKEN = os.getenv("APIFY_API_TOKEN")
+    # Initialize the ApifyClient with your API token
+    client = ApifyClient(API_TOKEN)
+
+    # Check if API token is available
+    #-----TEMP
+    # for key, value in os.environ.items():
+    #     print(f"{key}: {value}")
+    #----
+    print("API_TOKEN:" ,API_TOKEN)
     if API_TOKEN == None:
         return "No API token found"
 
