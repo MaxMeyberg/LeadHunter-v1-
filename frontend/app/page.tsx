@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog"
 
 export default function Demo() {
   const [url, setUrl] = useState('')
@@ -18,7 +19,11 @@ export default function Demo() {
   const [emailContent, setEmailContent] = useState('')
   const [analysisRationale, setAnalysisRationale] = useState<string[]>([])
   const [error, setError] = useState('')
+  const [recipientName, setRecipientName] = useState('')
   const [copied, setCopied] = useState(false)
+  const [improvePrompt, setImprovePrompt] = useState('')
+  const [isImprovingEmail, setIsImprovingEmail] = useState(false)
+  const [improveDialogOpen, setImproveDialogOpen] = useState(false)
 
   const aiSteps = [
     { title: 'Sensing', description: 'Scraping LinkedIn profile data' },
@@ -60,6 +65,7 @@ export default function Demo() {
         setError(response.error)
       } else {
         setEmail(response.email)
+        setRecipientName(response.recipient_name)
         setEmailContent(response.groq_response)
         setAnalysisRationale(response.analysis_rationale)
       }
@@ -67,6 +73,48 @@ export default function Demo() {
       setError(err.message || 'Something went wrong.')
     } finally {
       setIsEmailLoading(false)
+    }
+  }
+
+  const handleImproveEmail = async () => {
+    console.log('Improve Email Clicked');
+    console.log('Improve Prompt:', improvePrompt);
+    console.log('Email Content:', emailContent);
+    
+    if (!improvePrompt || !emailContent) {
+      console.log('Improve Prompt, Email Content, or Email is empty');
+      return;
+    }
+    
+    setIsImprovingEmail(true);
+    setError('');
+    
+    try {
+      const response = await fetch('http://127.0.0.1:5000/improve-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email: emailContent, 
+          prompt: improvePrompt,
+          recipient_name: recipientName
+        })
+      }).then(res => res.json());
+      
+      if (response.error) {
+        setError(response.error);
+        console.log('Error:', response.error);
+      } else {
+        setEmailContent(response.improved_email);
+        setAnalysisRationale(response.improvement_rationale);
+        setImproveDialogOpen(false);
+        setImprovePrompt('');
+        console.log('Email Improved Successfully');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong.');
+      console.log('Error:', err.message);
+    } finally {
+      setIsImprovingEmail(false);
     }
   }
 
@@ -187,6 +235,40 @@ export default function Demo() {
                       >
                         {isEmailLoading ? "Regenerating..." : "Regenerate"}
                       </Button>
+                      <Dialog open={improveDialogOpen} onOpenChange={setImproveDialogOpen}>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                            disabled={isEmailLoading}
+                          >
+                            Improve Email
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Improve Email</DialogTitle>
+                          </DialogHeader>
+                          <div className="py-4">
+                            <p className="text-sm text-gray-500 mb-4">Enter instructions on how you'd like to improve this email:</p>
+                            <Input
+                              placeholder="e.g., Make it more persuasive, focus on benefits, shorten it"
+                              className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 w-full"
+                              value={improvePrompt}
+                              onChange={(e) => setImprovePrompt(e.target.value)}
+                            />
+                          </div>
+                          <DialogFooter>
+                            <Button
+                              className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
+                              onClick={handleImproveEmail}
+                              disabled={isImprovingEmail || !improvePrompt}
+                            >
+                              {isImprovingEmail ? "Improving..." : "Improve Email"}
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                       <Button 
                         className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                         disabled={isEmailLoading}
