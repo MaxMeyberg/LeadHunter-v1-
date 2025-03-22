@@ -21,7 +21,6 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
     # for key, value in os.environ.items():
     #     print(f"{key}: {value}")
     #----
-    print("API_TOKEN:" ,API_TOKEN)
     if API_TOKEN == None:
         return "No API token found"
 
@@ -41,7 +40,7 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
 
     # Fetch and print Actor results from the run's dataset (if there are any)
     for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-        print(item)
+        continue
 
     """
     Ok, you can write below here :)
