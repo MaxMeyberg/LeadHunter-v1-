@@ -22,12 +22,29 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
             url
         ] }
 
-    # Run the Actor and wait for it to finish, the "2SyF0bVxmgGr8IVCZ" is just the ID for Apify ,DONT be stupid and touch it, I got it from the Docs
+    # Max: The "2SyF0bVxmgGr8IVCZ" is just the ID for Apify ,DONT be stupid and touch it, I got it from the Docs
     run = client.actor("2SyF0bVxmgGr8IVCZ").call(run_input=run_input)
 
-    for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-        break  # Only take the first item
+    """ Max:
+    If you are asking why tf this works w "next", imagine vibe coding for a project to semi-work, then going back to fix it
+    But then a pro python developer comes and says "Why are't you using next?", and walks up to me to fix this issue
+    The worst part is that everything inside of that "next" is actuallu from the Docs
+    from the API, so if you genuinely want to hurt yourself worse than my first time creating an account for Microsoft Azure, be my guest, but be warned 
 
+    This witchcraft was the old code:
+    
+    for item in client.dataset(run["defaultDatasetId"]).iterate_items():
+        break
+
+    Truly a Claude 3.7 moment.
+    
+    TLDR: Dont touch this line, it works
+    """
+    item = next(client.dataset(run["defaultDatasetId"]).iterate_items())
+    """
+    TOUCHING CODE BELOW THIS POINT IS OK
+    -----
+    """
     # Ensure keys exist before accessing them
     about = item.get("about", "")
     headline = item.get("headline", "")
