@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
@@ -18,7 +18,6 @@ export default function Demo() {
   const [email, setEmail] = useState('')
   const [emailContent, setEmailContent] = useState('')
   const [analysisRationale, setAnalysisRationale] = useState<string[]>([])
-  const [error, setError] = useState('')
   const [recipientName, setRecipientName] = useState('')
   const [copied, setCopied] = useState(false)
   const [improvePrompt, setImprovePrompt] = useState('')
@@ -38,7 +37,6 @@ export default function Demo() {
   
     setProcessStep(1)
     setIsEmailLoading(true)
-    setError('')
     setShowReasoning(false)
   
     const progressInterval = setInterval(() => {
@@ -62,15 +60,15 @@ export default function Demo() {
       ])
   
       if (response.error) {
-        setError(response.error)
+        console.log('Error:', response.error)
       } else {
         setEmail(response.email)
         setRecipientName(response.recipient_name)
         setEmailContent(response.groq_response)
         setAnalysisRationale(response.analysis_rationale)
       }
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong.')
+    } catch (err) {
+      console.log('Error:', err);
     } finally {
       setIsEmailLoading(false)
     }
@@ -87,7 +85,6 @@ export default function Demo() {
     }
     
     setIsImprovingEmail(true);
-    setError('');
     
     try {
       const response = await fetch('http://127.0.0.1:5000/improve-email', {
@@ -101,7 +98,6 @@ export default function Demo() {
       }).then(res => res.json());
       
       if (response.error) {
-        setError(response.error);
         console.log('Error:', response.error);
       } else {
         setEmailContent(response.improved_email);
@@ -110,9 +106,8 @@ export default function Demo() {
         setImprovePrompt('');
         console.log('Email Improved Successfully');
       }
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong.');
-      console.log('Error:', err.message);
+    } catch (err) {
+      console.log('Error:', err);
     } finally {
       setIsImprovingEmail(false);
     }
@@ -250,7 +245,7 @@ export default function Demo() {
                             <DialogTitle>Improve Email</DialogTitle>
                           </DialogHeader>
                           <div className="py-4">
-                            <p className="text-sm text-gray-500 mb-4">Enter instructions on how you'd like to improve this email:</p>
+                            <p className="text-sm text-gray-500 mb-4">Enter instructions on how you&apos;d like to improve this email:</p>
                             <Input
                               placeholder="e.g., Make it more persuasive, focus on benefits, shorten it"
                               className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 w-full"
