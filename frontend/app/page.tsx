@@ -51,7 +51,7 @@ export default function Demo() {
   
     try {
       const [response] = await Promise.all([
-        fetch('http://127.0.0.1:5000/scrape-linkedin', {
+        fetch('https://leadhunterbackend.vercel.app/scrape-linkedin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url, prompt })
@@ -87,7 +87,7 @@ export default function Demo() {
     setIsImprovingEmail(true);
     
     try {
-      const response = await fetch('http://127.0.0.1:5000/improve-email', {
+      const response = await fetch('https://leadhunterbackend.vercel.app/improve-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
