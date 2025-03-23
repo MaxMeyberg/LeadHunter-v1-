@@ -1,14 +1,14 @@
 
-TODO: Update readme 
+This is a README that is isn't build by vibe coding, so it might be janky but should work.
 
 
-Install virtual environment (cd/backend):
+[Terminal 1]Install virtual environment (cd/backend):
 
     python -m venv venv
     source venv/bin/activate
 
 
-Install dependencies:
+[Terminal 2] Install dependencies (cd/frontend):
 
     pip install -r requirements.txt
 
