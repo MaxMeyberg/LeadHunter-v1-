@@ -1,6 +1,8 @@
-
 This is a README that is isn't build by vibe coding, so it might be janky but should work.
 
+Here's how this application works!
+
+![LeadHunter Diagram](diagram.jpeg)
 
 [Terminal 1]Install virtual environment (cd/backend):
 
@@ -14,7 +16,6 @@ This is a README that is isn't build by vibe coding, so it might be janky but sh
 
 RUN backend:
     python app.py
-
 
 Fun Facts:
 
