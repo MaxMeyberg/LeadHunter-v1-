@@ -164,7 +164,7 @@ export default function Demo() {
               <Button 
                 className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                 onClick={handleAnalyzeProfile}
-                disabled={isEmailLoading}
+                disabled={isEmailLoading || !url || !prompt}
               >
                 Analyze Profile
               </Button>
