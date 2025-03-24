@@ -338,7 +338,7 @@ export default function Demo() {
                               <DialogTitle>Improve Email</DialogTitle>
                             </DialogHeader>
                             <div className="py-4">
-                              <p className="text-sm text-gray-500 mb-4">Enter instructions on how you'd like to improve this email:</p>
+                              <p className="text-sm text-gray-500 mb-4">Enter instructions on how you&apos;d like to improve this email:</p>
                               <Input
                                 placeholder="e.g., Make it more persuasive, focus on benefits, shorten it"
                                 className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 w-full"
