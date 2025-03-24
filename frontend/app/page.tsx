@@ -13,6 +13,7 @@ import { toast } from "sonner"
 export default function Demo() {
   const [url, setUrl] = useState('')
   const [processStep, setProcessStep] = useState(0)
+  const [progressValue, setProgressValue] = useState(0)
   const [showReasoning, setShowReasoning] = useState(false)
   const [isEmailLoading, setIsEmailLoading] = useState(false)
   const [prompt, setPrompt] = useState('')
@@ -60,9 +61,15 @@ export default function Demo() {
     }
     
     setProcessStep(1)
+    setProgressValue(0) // Start at 0%
     setIsEmailLoading(true)
     setShowReasoning(false)
   
+    // Animate progress from 0% to 20%
+    setTimeout(() => {
+      setProgressValue(20)
+    }, 300)
+
     const progressInterval = setInterval(() => {
       setProcessStep(prev => {
         if (prev >= 3) {
@@ -70,6 +77,11 @@ export default function Demo() {
           return 3
         }
         return prev + 1
+      })
+      
+      setProgressValue(prev => {
+        if (prev >= 60) return 60
+        return prev + 20
       })
     }, 3000)
   
@@ -92,8 +104,10 @@ export default function Demo() {
         setAnalysisRationale(response.analysis_rationale)
         
         setProcessStep(4)
+        setProgressValue(80)
         setTimeout(() => {
           setProcessStep(5)
+          setProgressValue(100)
         }, 1500)
       }
     } catch (err) {
@@ -222,7 +236,7 @@ export default function Demo() {
               <Button 
                 className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                 onClick={handleAnalyzeProfile}
-                disabled={isEmailLoading || !url || !prompt}
+                disabled={isEmailLoading || !url || !prompt || processStep == 3 || processStep == 4}
               >
                 Analyze Profile
               </Button>
@@ -232,7 +246,7 @@ export default function Demo() {
           <CardContent className="space-y-6">
             {processStep > 0 && (
               <>
-                <Progress value={processStep * 20} className="h-1 [&>div]:transition-all [&>div]:duration-1000 [&>div]:ease-in-out" />
+                <Progress value={progressValue} className="h-1 [&>div]:transition-all [&>div]:duration-[3s] [&>div]:ease-in-out" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
                   {aiSteps.map((step, index) => (
                     <div 
@@ -324,7 +338,7 @@ export default function Demo() {
                               <DialogTitle>Improve Email</DialogTitle>
                             </DialogHeader>
                             <div className="py-4">
-                              <p className="text-sm text-gray-500 mb-4">Enter instructions on how you&apos;d like to improve this email:</p>
+                              <p className="text-sm text-gray-500 mb-4">Enter instructions on how you'd like to improve this email:</p>
                               <Input
                                 placeholder="e.g., Make it more persuasive, focus on benefits, shorten it"
                                 className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 w-full"
