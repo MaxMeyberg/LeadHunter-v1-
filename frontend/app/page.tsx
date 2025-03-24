@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog"
+import { toast } from "sonner"
 
 export default function Demo() {
   const [url, setUrl] = useState('')
@@ -38,7 +39,7 @@ export default function Demo() {
     const linkedInRegex = /^https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-_%]+\/?$/;
 
     if (!linkedInRegex.test(url)) {
-      console.log('Invalid LinkedIn URL');
+      toast.error('Invalid LinkedIn URL. Please enter a valid profile URL.')
       return;
     }
     
@@ -67,7 +68,7 @@ export default function Demo() {
       ])
   
       if (response.error) {
-        console.log('Error:', response.error)
+        toast.error(`Error: ${response.error}`)
       } else {
         setEmail(response.email)
         setRecipientName(response.recipient_name)
@@ -80,19 +81,15 @@ export default function Demo() {
         }, 1500)
       }
     } catch (err) {
-      console.log('Error:', err);
+      toast.error(`An error occurred: ${err instanceof Error ? err.message : 'Unknown error'}`)
     } finally {
       setIsEmailLoading(false)
     }
   }
 
   const handleImproveEmail = async () => {
-    console.log('Improve Email Clicked');
-    console.log('Improve Prompt:', improvePrompt);
-    console.log('Email Content:', emailContent);
-    
     if (!improvePrompt || !emailContent) {
-      console.log('Improve Prompt, Email Content, or Email is empty');
+      toast.error('Improve prompt or email content is empty')
       return;
     }
     
@@ -110,16 +107,16 @@ export default function Demo() {
       }).then(res => res.json());
       
       if (response.error) {
-        console.log('Error:', response.error);
+        toast.error(`Error: ${response.error}`)
       } else {
         setEmailContent(response.improved_email);
         setAnalysisRationale(response.improvement_rationale);
         setImproveDialogOpen(false);
         setImprovePrompt('');
-        console.log('Email Improved Successfully');
+        toast.success('Email improved successfully')
       }
     } catch (err) {
-      console.log('Error:', err);
+      toast.error(`An error occurred: ${err instanceof Error ? err.message : 'Unknown error'}`)
     } finally {
       setIsImprovingEmail(false);
     }
@@ -129,10 +126,11 @@ export default function Demo() {
     navigator.clipboard.writeText(text)
       .then(() => {
         setCopied(true);
+        toast.success('Copied to clipboard')
         setTimeout(() => setCopied(false), 2000);
       })
       .catch(err => {
-        console.error('Failed to copy text: ', err);
+        toast.error(`Failed to copy text: ${err instanceof Error ? err.message : 'Unknown error'}`)
       });
   };
 
