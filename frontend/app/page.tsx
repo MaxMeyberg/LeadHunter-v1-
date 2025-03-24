@@ -34,16 +34,23 @@ export default function Demo() {
 
   const handleAnalyzeProfile = async () => {
     if (!url || !prompt) return
-  
+
+    const linkedInRegex = /^https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-_%]+\/?$/;
+
+    if (!linkedInRegex.test(url)) {
+      console.log('Invalid LinkedIn URL');
+      return;
+    }
+    
     setProcessStep(1)
     setIsEmailLoading(true)
     setShowReasoning(false)
   
     const progressInterval = setInterval(() => {
       setProcessStep(prev => {
-        if (prev >= 5) {
+        if (prev >= 3) {
           clearInterval(progressInterval)
-          return 5
+          return 3
         }
         return prev + 1
       })
@@ -66,6 +73,11 @@ export default function Demo() {
         setRecipientName(response.recipient_name)
         setEmailContent(response.groq_response)
         setAnalysisRationale(response.analysis_rationale)
+        
+        setProcessStep(4)
+        setTimeout(() => {
+          setProcessStep(5)
+        }, 1500)
       }
     } catch (err) {
       console.log('Error:', err);
@@ -125,32 +137,32 @@ export default function Demo() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 p-8">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gray-50 text-gray-900 p-4 sm:p-8">
+      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-semibold text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900">
             <span className="text-blue-600">Lead</span>Hunter
           </h1>
-          <p className="text-gray-500">Enterprise Email Lead Intelligence Platform</p>
+          <p className="text-sm sm:text-base text-gray-500">Enterprise Email Lead Intelligence Platform</p>
         </div>
 
         <Card className="bg-white border border-gray-200 shadow-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex flex-col sm:flex-row items-center gap-2">
               <Input 
                 placeholder="Paste LinkedIn profile URL"
-                className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400"
+                className="w-full bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 mb-2 sm:mb-0"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
               />
               <Input
                 placeholder="Enter campaign prompt"
-                className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400"
+                className="w-full bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 mb-2 sm:mb-0"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
               />
               <Button 
-                className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                 onClick={handleAnalyzeProfile}
                 disabled={isEmailLoading}
               >
@@ -163,11 +175,11 @@ export default function Demo() {
             {processStep > 0 && (
               <>
                 <Progress value={processStep * 20} className="h-1 [&>div]:transition-all [&>div]:duration-1000 [&>div]:ease-in-out" />
-                <div className="grid grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
                   {aiSteps.map((step, index) => (
                     <div 
                       key={step.title}
-                      className={`p-4 rounded-lg border ${index < processStep ? 
+                      className={`p-3 sm:p-4 rounded-lg border ${index < processStep ? 
                         'border-blue-500 bg-blue-50' : 'bg-gray-50 border-gray-200'}`}
                     >
                       <Badge 
@@ -176,8 +188,8 @@ export default function Demo() {
                       >
                         Step {index + 1}
                       </Badge>
-                      <h3 className="font-medium text-gray-900">{step.title}</h3>
-                      <p className="text-sm text-gray-500">{step.description}</p>
+                      <h3 className="font-medium text-gray-900 text-sm sm:text-base">{step.title}</h3>
+                      <p className="text-xs sm:text-sm text-gray-500">{step.description}</p>
                     </div>
                   ))}
                 </div>
@@ -189,17 +201,25 @@ export default function Demo() {
                 <Separator className="bg-gray-200" />
 
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="text-blue-600 text-xl">✓</span>
-                    <h2 className="text-lg font-medium text-gray-900">Identified Contact:</h2>
-                    <div className="relative inline-block">
+                    <h2 className="text-base sm:text-lg font-medium text-gray-900">Identified Contact:</h2>
+                    <div className="relative inline-flex items-center gap-1 mt-1 sm:mt-0">
                       <code 
-                        className={`px-3 py-1 rounded cursor-pointer transition-colors ${copied ? 'bg-green-100 text-green-600' : 'bg-blue-50 text-blue-600'}`}
-                        onClick={() => copyToClipboard(email)}
-                        title="Click to copy to clipboard"
+                        className={`px-2 sm:px-3 py-1 rounded transition-colors text-xs sm:text-sm ${copied ? 'bg-green-100 text-green-600' : 'bg-blue-50 text-blue-600'}`}
+                        title="Email address"
                       >
-                        {email}
+                        {email || 'No email found'}
                       </code>
+                      <button
+                        onClick={() => copyToClipboard(email)}
+                        className="p-1 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+                        title="Copy to clipboard"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                        </svg>
+                      </button>
                       {copied && (
                         <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                           Copied!
@@ -209,66 +229,75 @@ export default function Demo() {
                   </div>
                   
                   <Card className="bg-gray-50 border border-gray-200">
-                    <CardContent className="p-4 font-mono text-sm whitespace-pre-wrap text-gray-700">
+                    <CardContent className="p-3 sm:p-4 font-mono text-xs sm:text-sm whitespace-pre-wrap text-gray-700">
                       {isEmailLoading ? (
-                        <div className="flex justify-center items-center py-8">
+                        <div className="flex justify-center items-center py-6 sm:py-8">
                           <div className="animate-pulse flex flex-col items-center space-y-2">
-                            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-                            <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+                            <div className="h-3 sm:h-4 bg-gray-200 rounded w-3/4"></div>
+                            <div className="h-3 sm:h-4 bg-gray-200 rounded w-1/2"></div>
+                            <div className="h-3 sm:h-4 bg-gray-200 rounded w-5/6"></div>
+                            <div className="h-3 sm:h-4 bg-gray-200 rounded w-4/6"></div>
                           </div>
                         </div>
                       ) : emailContent}
                     </CardContent>
-                    <CardFooter className="flex gap-2 justify-end">
-                      <Button 
-                        variant="outline" 
-                        className="border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                        onClick={handleAnalyzeProfile}
-                        disabled={isEmailLoading}
-                      >
-                        {isEmailLoading ? "Regenerating..." : "Regenerate"}
-                      </Button>
-                      <Dialog open={improveDialogOpen} onOpenChange={setImproveDialogOpen}>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                            disabled={isEmailLoading}
-                          >
-                            Improve Email
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Improve Email</DialogTitle>
-                          </DialogHeader>
-                          <div className="py-4">
-                            <p className="text-sm text-gray-500 mb-4">Enter instructions on how you&apos;d like to improve this email:</p>
-                            <Input
-                              placeholder="e.g., Make it more persuasive, focus on benefits, shorten it"
-                              className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 w-full"
-                              value={improvePrompt}
-                              onChange={(e) => setImprovePrompt(e.target.value)}
-                            />
-                          </div>
-                          <DialogFooter>
+                    <CardFooter className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
+                      <div className="flex flex-wrap gap-2 w-full sm:w-auto justify-between sm:justify-start">
+                        <Button 
+                          variant="outline" 
+                          className="flex-1 sm:flex-initial text-xs sm:text-sm border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                          onClick={handleAnalyzeProfile}
+                          disabled={isEmailLoading}
+                        >
+                          {isEmailLoading ? "Regenerating..." : "Regenerate"}
+                        </Button>
+                        <Dialog open={improveDialogOpen} onOpenChange={setImproveDialogOpen}>
+                          <DialogTrigger asChild>
                             <Button
-                              className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
-                              onClick={handleImproveEmail}
-                              disabled={isImprovingEmail || !improvePrompt}
+                              variant="outline"
+                              className="flex-1 sm:flex-initial text-xs sm:text-sm border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                              disabled={isEmailLoading}
                             >
-                              {isImprovingEmail ? "Improving..." : "Improve Email"}
+                              Improve Email
                             </Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
+                          </DialogTrigger>
+                          <DialogContent className="w-[95vw] max-w-md sm:max-w-lg sm:w-full">
+                            <DialogHeader>
+                              <DialogTitle>Improve Email</DialogTitle>
+                            </DialogHeader>
+                            <div className="py-4">
+                              <p className="text-sm text-gray-500 mb-4">Enter instructions on how you&apos;d like to improve this email:</p>
+                              <Input
+                                placeholder="e.g., Make it more persuasive, focus on benefits, shorten it"
+                                className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 w-full"
+                                value={improvePrompt}
+                                onChange={(e) => setImprovePrompt(e.target.value)}
+                              />
+                            </div>
+                            <DialogFooter>
+                              <Button
+                                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
+                                onClick={handleImproveEmail}
+                                disabled={isImprovingEmail || !improvePrompt}
+                              >
+                                {isImprovingEmail ? "Improving..." : "Improve Email"}
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
                       <Button 
-                        className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
+                        className="w-full sm:w-auto mt-2 sm:mt-0 text-xs sm:text-sm bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                         disabled={isEmailLoading}
                       >
-                        <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer">Send Email</a>
+                        <a 
+                          href={`mailto:${email || ''}?subject=${encodeURIComponent(prompt)}&body=${encodeURIComponent(emailContent)}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="w-full h-full block"
+                        >
+                          Send Email
+                        </a>
                       </Button>
                     </CardFooter>
                   </Card>
@@ -284,11 +313,11 @@ export default function Demo() {
                     >
                       {showReasoning ? '▼' : '▶'}
                     </Button>
-                    <h3 className="font-medium text-gray-900">Analysis Rationale</h3>
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base">Analysis Rationale</h3>
                   </div>
                   
                   {showReasoning && (
-                    <div className="p-4 bg-gray-50 rounded-lg space-y-3 text-sm text-gray-600 border border-gray-200">
+                    <div className="p-3 sm:p-4 bg-gray-50 rounded-lg space-y-3 text-xs sm:text-sm text-gray-600 border border-gray-200">
                       {analysisRationale.map((reason: string, index: number) => (
                         <p key={index} className="flex gap-2">
                           <span className="text-blue-600">•</span>
@@ -303,7 +332,7 @@ export default function Demo() {
           </CardContent>
         </Card>
 
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center text-xs sm:text-sm text-gray-500">
           Enterprise-grade backend ensured for high accuracy
         </p>
       </div>
