@@ -24,6 +24,22 @@ export default function Demo() {
   const [improvePrompt, setImprovePrompt] = useState('')
   const [isImprovingEmail, setIsImprovingEmail] = useState(false)
   const [improveDialogOpen, setImproveDialogOpen] = useState(false)
+  const [showLinkedInSuggestions, setShowLinkedInSuggestions] = useState(false)
+  const [showCampaignSuggestions, setShowCampaignSuggestions] = useState(false)
+
+  const linkedInSuggestions = [
+    "https://www.linkedin.com/in/jenhsunhuang/",
+    "https://www.linkedin.com/in/satyanadella/",
+    "https://www.linkedin.com/in/williamhgates/",
+    "https://www.linkedin.com/in/sundarpichai/",
+  ]
+
+  const campaignSuggestions = [
+    "Looking to discuss how our solution can improve your sales efficiency.",
+    "Would like to share how our platform can reduce operational costs.",
+    "Interested in connecting about potential partnership opportunities.",
+    "I would like to learn more about your company's products and how we can help you improve your sales efficiency."
+  ]
 
   const aiSteps = [
     { title: 'Sensing', description: 'Scraping LinkedIn profile data' },
@@ -134,6 +150,16 @@ export default function Demo() {
       });
   };
 
+  const selectLinkedInSuggestion = (suggestion: string) => {
+    setUrl(suggestion);
+    setShowLinkedInSuggestions(false);
+  };
+
+  const selectCampaignSuggestion = (suggestion: string) => {
+    setPrompt(suggestion);
+    setShowCampaignSuggestions(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 p-4 sm:p-8">
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
@@ -147,18 +173,52 @@ export default function Demo() {
         <Card className="bg-white border border-gray-200 shadow-sm">
           <CardHeader>
             <CardTitle className="flex flex-col sm:flex-row items-center gap-2">
-              <Input 
-                placeholder="Paste LinkedIn profile URL"
-                className="w-full bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 mb-2 sm:mb-0"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-              <Input
-                placeholder="Enter campaign prompt"
-                className="w-full bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 mb-2 sm:mb-0"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-              />
+              <div className="w-full relative">
+                <Input 
+                  placeholder="Paste LinkedIn profile URL"
+                  className="w-full bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 mb-2 sm:mb-0"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  onFocus={() => setShowLinkedInSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowLinkedInSuggestions(false), 200)}
+                />
+                {showLinkedInSuggestions && (
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+                    {linkedInSuggestions.map((suggestion, index) => (
+                      <div 
+                        key={index}
+                        className="px-3 py-2 text-sm text-gray-900 opacity-80 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => selectLinkedInSuggestion(suggestion)}
+                      >
+                        {suggestion.slice(12, -1)}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="w-full relative">
+                <Input
+                  placeholder="Enter campaign prompt"
+                  className="w-full bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 mb-2 sm:mb-0"
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  onFocus={() => setShowCampaignSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowCampaignSuggestions(false), 200)}
+                />
+                {showCampaignSuggestions && (
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+                    {campaignSuggestions.map((suggestion, index) => (
+                      <div 
+                        key={index}
+                        className="px-3 py-2 text-sm text-gray-900 opacity-80 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => selectCampaignSuggestion(suggestion)}
+                      >
+                        {suggestion}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
               <Button 
                 className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                 onClick={handleAnalyzeProfile}
