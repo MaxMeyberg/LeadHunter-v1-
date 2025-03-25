@@ -8,7 +8,7 @@ This is a README that is isn't build by vibe coding, so it might be janky but sh
 ### Application Demo
 Watch our demo video to see LeadHunter in action:
 
-[![LeadHunter Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![LeadHunter Demo Video](https://img.youtube.com/vi/zk4MY0r0eF0/0.jpg)](https://www.youtube.com/watch?v=zk4MY0r0eF0)
 
 ### Setup Instructions
 
