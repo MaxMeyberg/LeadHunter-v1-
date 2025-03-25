@@ -1,8 +1,16 @@
 This is a README that is isn't build by vibe coding, so it might be janky but should work.
 
-Here's how this application works!
+## How It Works
 
+### System Architecture
 ![LeadHunter Diagram](diagram.jpeg)
+
+### Application Demo
+Watch our demo video to see LeadHunter in action:
+
+[![LeadHunter Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+
+### Setup Instructions
 
 [Terminal 1]Install virtual environment (cd/backend):
 
@@ -17,7 +25,7 @@ Here's how this application works!
 RUN backend:
     python app.py
 
-Fun Facts:
+### Fun Facts
 
 We won 2nd place in this hackathon:
 https://ai-agents-hackathon-gtc.devpost.com/?_gl=1*l8urn7*_gcl_au*ODk5NjQyNTczLjE3NDAyNjMzNDM.*_ga*ODkyNzA3NzUwLjE3NDAyNjMzNDM.*_ga_0YHJK3Y10M*MTc0Mjc1MzIyMS42LjEuMTc0Mjc1MzIzOS4wLjAuMA..
