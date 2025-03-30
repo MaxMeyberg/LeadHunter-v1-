@@ -16,7 +16,7 @@ STEP 1: Create 2 terminals, and copy-paste these commands
 
 [Terminal 1] Install dependencies:
 
-    cd/frontend
+    cd frontend
     npm install
 
 [Terminal 2] Install virtual environment & dependencies:
