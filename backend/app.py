@@ -1,10 +1,9 @@
 import os
 import json
+from flask_cors import CORS #allows you to call the flask functions
 from flask import Flask, request, jsonify
 from API_services.apify import APIFY_LinkedIn_WebScrape
-#from groq import Groq
 from dotenv import load_dotenv
-from flask_cors import CORS
 from google import genai
 from google.genai import types
 
@@ -13,7 +12,6 @@ load_dotenv("../.env")
 app = Flask(__name__)
 CORS(app)
 
-#client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
 
 @app.route('/scrape-linkedin', methods=['POST'])
