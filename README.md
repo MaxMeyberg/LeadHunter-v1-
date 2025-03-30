@@ -12,20 +12,26 @@ Watch our demo video to see LeadHunter in action:
 
 ### Setup Instructions
 
-[Terminal 1] Install dependencies (cd/frontend):
+STEP 1: Create 2 terminals, and copy-paste these commands
 
+[Terminal 1] Install dependencies:
+
+    cd/frontend
     npm install
 
-[Terminal 2] Install virtual environment & dependancies (cd/backend):
+[Terminal 2] Install virtual environment & dependencies:
 
+    cd backend
     python -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
 
-[Terminal 1] run frontend
+[Terminal 1] run frontend:
+
     npm run dev
 
-[Terminal 2] run backend
+[Terminal 2] run backend:
+
     python app.py
     
 
