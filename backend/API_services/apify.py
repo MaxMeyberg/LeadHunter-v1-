@@ -46,10 +46,11 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
     -----
     """
     # Ensure keys exist before accessing them
-    about = item.get("about", "")
+    fullName = item.get("fullName", "")
     headline = item.get("headline", "")
     email = item.get("email", "")
-    fullName = item.get("fullName", "")
+    about = item.get("about", "")
+    
 
     result = {
         "fullName": fullName,
