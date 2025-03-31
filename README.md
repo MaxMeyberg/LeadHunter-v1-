@@ -35,7 +35,7 @@ Get your API keys (put these into the .env file):
 
     APIFY_API_TOKEN=xxxx
     APIFY_USER_ID=xxxx
-    GEMENI_API_KEY=xxxx
+    GEMINI_API_KEY=xxxx
 
 
 STEP 4: Get your API keys (paste these in a browser):
@@ -45,7 +45,7 @@ APIFY_API_TOKEN=xxxx
 
     https://console.apify.com/sign-up
 
-GEMENI_API_KEY=xxxx
+GEMINI_API_KEY=xxxx
 
     https://aistudio.google.com/app/apikey
     

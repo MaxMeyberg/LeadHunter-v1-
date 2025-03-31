@@ -98,9 +98,9 @@ export default function Demo() {
       if (response.error) {
         toast.error(`Error: ${response.error}`)
       } else {
-        setEmail(response.email)
+        setEmail(response.email_address)
         setRecipientName(response.recipient_name)
-        setEmailContent(response.groq_response)
+        setEmailContent(response.email_body)
         setAnalysisRationale(response.analysis_rationale)
         
         setProcessStep(4)

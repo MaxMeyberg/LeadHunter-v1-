@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 import json
 
-load_dotenv("../.env")
+load_dotenv("../../.env")
 
 def APIFY_LinkedIn_WebScrape(url: str) -> str: 
     API_TOKEN = os.getenv("APIFY_API_TOKEN")
@@ -58,5 +58,4 @@ def APIFY_LinkedIn_WebScrape(url: str) -> str:
         "about": about,
         
     }
-
     return result
