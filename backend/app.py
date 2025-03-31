@@ -22,7 +22,6 @@ def scrape_linkedin():
                     'url': 'https://www.linkedin.com/username', 
                     'prompt': 'I want to message this person to tell them that I want to work with them'
                     }
-
     """
     #helper function to check and make sure the UserInput isn't messed up (EX: the url is not there)
     validateUserInput(userInput)
@@ -31,24 +30,20 @@ def scrape_linkedin():
     prompt = userInput['prompt']
     
     try:
-        print("00")
         #WS_info is shorthand for web scrape info
         WS_info = APIFY_LinkedIn_WebScrape(url)
 
-        print("11")
         aiResponse = GEMINI_Response(WS_info, prompt)
-        print("22")
-        print(aiResponse)
-    
-        print("33")
+
         return jsonify({
-            'email_address': WS_info.get("email"),
-            'email_body': aiResponse['email_output'],
-            'analysis_rationale': aiResponse['analysis_rationale'],
+            'email_address': WS_info.get("email"), #gets the email from the Web Scraping
+            'email_body': aiResponse['email_output'], #Generated email body via Gemeni
+            'analysis_rationale': aiResponse['analysis_rationale'], #generated analysis built by Gemeni
         })
-    
+
+    #If this is ran, you definatly blundered somewhere
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error located in app.py/sceape_linkedin': str(e)}), 500
 
 #TODO: FIX THIS VIBE CODED Garbage, We need to fix the GEMENI_Response function
 @app.route('/improve-email', methods=['POST'])
