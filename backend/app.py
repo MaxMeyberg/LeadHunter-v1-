@@ -31,13 +31,16 @@ def scrape_linkedin():
     prompt = userInput['prompt']
     
     try:
+        print("00")
         #WS_info is shorthand for wb scrapped info
         WS_info = APIFY_LinkedIn_WebScrape(url)
 
+        print("11")
         aiResponse = GEMINI_Response(WS_info, prompt)
-        
+        print("22")
+        print(aiResponse)
     
-        
+        print("33")
         return jsonify({
             'email_address': WS_info.get("email"),
             'email_body': aiResponse['email_output'],
@@ -47,9 +50,11 @@ def scrape_linkedin():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-#TODO: FIX THIS SHIT
+#TODO: FIX THIS SHIT, reuse the gemeni if
 @app.route('/improve-email', methods=['POST'])
 def improve_email():
+
+    
     data = request.get_json()
     
     if not data or 'email' not in data or 'prompt' not in data:
