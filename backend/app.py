@@ -50,7 +50,7 @@ def scrape_linkedin():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-#TODO: FIX THIS SHIT, reuse the gemeni if
+#TODO: FIX THIS VIBE CODED Garbage, We need to fix the GEMENI_Response function
 @app.route('/improve-email', methods=['POST'])
 def improve_email():
 
@@ -97,7 +97,7 @@ def improve_email():
         return jsonify({'error': str(e)}), 500
 
 
-"""This is used to validate the User Input to make sure it's legit"""
+"""[Handwritten] This is used to validate the User Input to make sure it's legit"""
 def validateUserInput(userInput):
     #Check to see if backend even received the userInput:
     if not userInput:
