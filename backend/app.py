@@ -32,7 +32,7 @@ def scrape_linkedin():
     
     try:
         print("00")
-        #WS_info is shorthand for wb scrapped info
+        #WS_info is shorthand for web scrape info
         WS_info = APIFY_LinkedIn_WebScrape(url)
 
         print("11")
