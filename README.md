@@ -12,7 +12,7 @@ Watch our demo video to see LeadHunter in action:
 
 ### Setup Instructions
 
-STEP 1: Create 2 terminals, and copy-paste these commands
+STEP 1: Create 3 terminals, and copy-paste these commands
 
 [Terminal 1]: Install dependencies:
 
