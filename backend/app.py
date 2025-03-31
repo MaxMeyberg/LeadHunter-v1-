@@ -12,26 +12,43 @@ load_dotenv("../.env")
 app = Flask(__name__)
 CORS(app)
 
-client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+client = genai.Client(api_key=os.getenv("GEMENI_API_KEY"))
 
 @app.route('/scrape-linkedin', methods=['POST']) #call from the frontend to ask to webscrape
 def scrape_linkedin():
-    data = request.get_json()
-    print(data)
+    userInput = request.get_json()
+    """ Looks like this:
+        userInput = {
+                    'url': 'https://www.linkedin.com/username', 
+                    'prompt': 'I want to message this person to tell them that I want to work with them'
+                    }
+
+    """
     
-    if not data or 'url' not in data:
+    #Check to see if backend even received the userInput:
+    if not userInput:
+        return jsonify({'error': 'backend didnt receive userInput'}), 400
+    
+    # Check to see if url was received by backend
+    if 'url' not in userInput:
         return jsonify({'error': 'Missing URL in request'}), 400
 
-    url = data['url']
-    prompt = data['prompt']
+    # Check to see if prompt was received by backend
+    if 'prompt' not in userInput:
+        return jsonify({'error': 'Missing prompt in request'}), 400
+
+    url = userInput['url']
+    prompt = userInput['prompt']
     
     try:
         result_str = APIFY_LinkedIn_WebScrape(url)
-        result = json.loads(result_str)
+        print("APIFY HARVEST", result_str)
+        result = result_str
 
-        email = result.get("email")
         about = result.get("about", "")
         headline = result.get("headline", "")
+        email = result.get("email")
+
         fullName = result.get("fullName", "")
         
         """ chat_completion = client.chat.completions.create(

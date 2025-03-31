@@ -35,7 +35,7 @@ Get your API keys (put these into the .env file):
 
     APIFY_API_TOKEN=xxxx
     APIFY_USER_ID=xxxx
-    GOOGLE_API_KEY=xxxx
+    GEMENI_API_KEY=xxxx
 
 
 STEP 4: Get your API keys (paste these in a browser):

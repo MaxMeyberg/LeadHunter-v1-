@@ -87,7 +87,7 @@ export default function Demo() {
   
     try {
       const [response] = await Promise.all([
-        fetch('https://leadhunterbackend.vercel.app/scrape-linkedin', {
+        fetch('http://127.0.0.1:5000/scrape-linkedin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url, prompt })
