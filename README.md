@@ -14,17 +14,42 @@ Watch our demo video to see LeadHunter in action:
 
 STEP 1: Create 2 terminals, and copy-paste these commands
 
-[Terminal 1] Install dependencies:
+[Terminal 1]: Install dependencies:
 
     cd frontend
     npm install
 
-[Terminal 2] Install virtual environment & dependencies:
+[Terminal 2]: Install virtual environment & dependencies:
 
     cd backend
     python -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
+
+STEP 2: 
+[Terminal 3]: Create a .env file in the directory where frontend and backend are located:
+
+    touch .env
+    
+Get your API keys (put these into the .env file):
+
+    APIFY_API_TOKEN=xxxx
+    APIFY_USER_ID=xxxx
+    GOOGLE_API_KEY=xxxx
+
+
+STEP 4: Get your API keys (paste these in a browser):
+
+APIFY_USER_ID=xxxx
+APIFY_API_TOKEN=xxxx
+
+    https://console.apify.com/sign-up
+
+GEMENI_API_KEY=xxxx
+
+    https://aistudio.google.com/app/apikey
+    
+    
 
 [Terminal 1] run frontend:
 
@@ -33,6 +58,8 @@ STEP 1: Create 2 terminals, and copy-paste these commands
 [Terminal 2] run backend:
 
     python app.py
+
+[Terminal 3] can just chill :D
     
 
 ### Fun Facts

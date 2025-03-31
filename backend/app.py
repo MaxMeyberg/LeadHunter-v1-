@@ -14,9 +14,10 @@ CORS(app)
 
 client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
 
-@app.route('/scrape-linkedin', methods=['POST'])
+@app.route('/scrape-linkedin', methods=['POST']) #call from the frontend to ask to webscrape
 def scrape_linkedin():
     data = request.get_json()
+    print(data)
     
     if not data or 'url' not in data:
         return jsonify({'error': 'Missing URL in request'}), 400
