@@ -1,4 +1,6 @@
-This is a README that is isn't build by vibe coding, so it might be janky but should work.
+This is an old  version of my private repo which won 2nd place at an Nvidia Hackathon, 
+
+Stay tuned for lead hunter v2 soon
 
 ## How It Works
 
