@@ -1,7 +1,5 @@
 This is LeadHunter, a project which won 2nd place at an Nvidia Hackathon
 
-DISCLAIMER:
-
 ## 🚨 Disclaimer
 
 This project was an early prototype built for a hackathon. While it helped shape some initial thinking, it is **not reflective of the current systems or approach used in PitchMail**.
