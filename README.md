@@ -1,4 +1,4 @@
-This is LeadHunter, a project which won 2nd place at an Nvidia Hackathon
+
 
 ## 🚨 Disclaimer
 
